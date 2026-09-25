@@ -28,7 +28,7 @@ const server = http.createServer(app);
 setupWebSocket(server);
 
 const port = PORT || 3000;
-server.listen(port, () => {
+server.listen(port, '0.0.0.0', () => {
   console.log(`سرور منچ آنلاین روی پورت ${port} اجرا شد`);
   console.log(`http://localhost:${port}`);
 });
