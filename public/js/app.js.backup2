@@ -1,0 +1,496 @@
+const API_URL = '';
+let token = localStorage.getItem('ludo_token') || null;
+let user = JSON.parse(localStorage.getItem('ludo_user') || 'null');
+let ws = null;
+let currentGame = null;
+let myPlayerIndex = null;
+let reconnectInterval = null;
+let localStream = null;
+let peerConnection = null;
+let remoteAudio = null;
+let isMuted = false;
+let settings = JSON.parse(localStorage.getItem('ludo_settings') || '{"sound":true,"volume":80}');
+
+const pages = ['login-page','register-page','lobby-page','create-room-page','join-room-page','game-page','profile-page','stats-page','settings-page','endgame-page'];
+
+function showPage(id) {
+  pages.forEach(p => document.getElementById(p).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+function el(id) { return document.getElementById(id); }
+
+async function api(path, opts={}) {
+  const res = await fetch(`${API_URL}${path}`, {
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token || ''}`, ...(opts.headers||{}) },
+    ...opts
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'خطای ناشناخته');
+  return data;
+}
+
+function playSound(name) {
+  if (!settings.sound) return;
+  const audio = el(`sound-${name}`);
+  if (audio) { audio.volume = settings.volume / 100; audio.currentTime = 0; audio.play().catch(()=>{}); }
+}
+
+// ==================== AUTH ====================
+async function register() {
+  try {
+    el('reg-error').textContent = '';
+    const username = el('reg-username').value.trim();
+    const password = el('reg-password').value;
+    const password2 = el('reg-password2').value;
+    if (!username || !password || !password2) throw new Error('تمام فیلدها الزامی هستند');
+    if (password !== password2) throw new Error('رمز عبور و تکرار آن یکسان نیستند');
+    if (username.length < 3 || username.length > 20) throw new Error('نام کاربری باید بین ۳ تا ۲۰ کاراکتر باشد');
+    if (password.length < 6) throw new Error('رمز عبور باید حدال ۶ کاراکتر باشد');
+    const data = await api('/api/auth/register', { method: 'POST', body: JSON.stringify({ username, password, passwordConfirm: password2 }) });
+    saveAuth(data);
+    showPage('lobby-page');
+    initLobby();
+  } catch (e) { el('reg-error').textContent = e.message; playSound('error'); }
+}
+
+async function login() {
+  try {
+    el('login-error').textContent = '';
+    const username = el('login-username').value.trim();
+    const password = el('login-password').value;
+    if (!username || !password) throw new Error('نام کاربری و رمز عبور الزامی هستند');
+    const data = await api('/api/auth/login', { method: 'POST', body: JSON.stringify({ username, password }) });
+    saveAuth(data);
+    showPage('lobby-page');
+    initLobby();
+  } catch (e) { el('login-error').textContent = e.message; playSound('error'); }
+}
+
+function saveAuth(data) {
+  token = data.token; user = data.user;
+  localStorage.setItem('ludo_token', token);
+  localStorage.setItem('ludo_user', JSON.stringify(user));
+  connectWS();
+}
+
+function logout() {
+  token = null; user = null;
+  localStorage.removeItem('ludo_token');
+  localStorage.removeItem('ludo_user');
+  if (ws) ws.close();
+  showPage('login-page');
+}
+
+// ==================== WEBSOCKET ====================
+function connectWS() {
+  if (!token) return;
+  const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+  ws = new WebSocket(`${proto}//${location.host}`);
+  ws.onopen = () => {
+    ws.send(JSON.stringify({ type: 'auth', token }));
+    el('connection-status').classList.add('hidden');
+  };
+  ws.onmessage = (e) => handleWSMessage(JSON.parse(e.data));
+  ws.onclose = () => {
+    el('connection-status').classList.remove('hidden');
+    clearTimeout(reconnectInterval);
+    reconnectInterval = setTimeout(connectWS, 2500);
+  };
+  ws.onerror = () => { el('connection-status').classList.remove('hidden'); };
+}
+
+function handleWSMessage(data) {
+  switch (data.type) {
+    case 'auth_success': break;
+    case 'auth_error': logout(); break;
+    case 'joined_room':
+      currentGame = data.game;
+      afterJoinRoom();
+      break;
+    case 'player_joined':
+      addSystemChat(`بازیکن ${escapeHtml(data.username)} وارد شد`);
+      if (currentGame && data.userId !== user.id) {
+        currentGame.player2 = data.userId;
+        currentGame.state.players[2].id = data.userId;
+        currentGame.state.status = 'playing';
+        if (el('waiting-opponent')) el('waiting-opponent').textContent = '🟢 حریف وارد شد! بازی آغاز می‌شود...';
+        setTimeout(startGame, 800);
+      }
+      break;
+    case 'player_disconnected':
+      addSystemChat('🔴 یک بازیکن قطع شد');
+      break;
+    case 'player_left':
+      addSystemChat(`بازیکن ${escapeHtml(data.username)} بازی را ترک کرد`);
+      break;
+    case 'dice_rolled':
+      currentGame.state = data.gameState;
+      el('dice-result').textContent = getDiceEmoji(data.dice);
+      playSound('dice');
+      const name1 = data.playerIndex === myPlayerIndex ? 'شما' : 'حریف';
+      addSystemChat(`🎲 ${name1} عدد ${data.dice} آورد`);
+      updateTurn();
+      break;
+    case 'piece_moved':
+      currentGame.state = data.gameState;
+      renderBoard();
+      playSound(data.hit ? 'hit' : 'move');
+      if (data.hit) addSystemChat('🔥 مهره حریف زده شد!');
+      updateTurn();
+      break;
+    case 'game_finished':
+      currentGame.state = data.gameState;
+      endGame(data.winner);
+      break;
+    case 'chat_message':
+      addChat(data.message);
+      playSound('message');
+      break;
+    case 'reaction':
+      showFloatingReaction(data.emoji);
+      break;
+    case 'voice_signal':
+      handleVoiceSignal(data);
+      break;
+    case 'error':
+      console.error(data.message);
+      break;
+  }
+}
+
+function getDiceEmoji(n) {
+  const map = {1:'⚀',2:'⚁',3:'⚂',4:'⚃',5:'⚄',6:'⚅'};
+  return map[n] || n;
+}
+
+// ==================== LOBBY ====================
+function initLobby() {
+  if (!user) return showPage('login-page');
+  el('lobby-username').textContent = user.username;
+  el('lobby-avatar').src = user.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`;
+}
+
+async function createGame() {
+  try {
+    const data = await api('/api/game/create', { method: 'POST' });
+    currentGame = data.game;
+    myPlayerIndex = 1;
+    el('room-code-display').textContent = currentGame.roomCode;
+    showPage('create-room-page');
+    ws.send(JSON.stringify({ type: 'join_room', roomCode: currentGame.roomCode }));
+  } catch (e) { alert(e.message); }
+}
+
+function cancelRoom() {
+  currentGame = null; myPlayerIndex = null;
+  showPage('lobby-page');
+}
+
+async function joinRoom() {
+  try {
+    el('join-error').textContent = '';
+    const code = el('join-room-code').value.trim().toUpperCase();
+    if (!code) throw new Error('کد اتاق را وارد کنید');
+    const data = await api('/api/game/join', { method: 'POST', body: JSON.stringify({ roomCode: code }) });
+    currentGame = data.game;
+    myPlayerIndex = 2;
+    if (!ws || ws.readyState !== WebSocket.OPEN) {
+      throw new Error('ارتباط با سرور هنوز آماده نیست؛ چند ثانیه صبر کنید و دوباره تلاش کنید');
+    }
+    ws.send(JSON.stringify({ type: 'join_room', roomCode: code }));
+    startGame();
+  } catch (e) { el('join-error').textContent = e.message; playSound('error'); }
+}
+
+function afterJoinRoom() {
+  if (currentGame && currentGame.player1 && currentGame.player2) {
+    if (el('waiting-opponent')) el('waiting-opponent').textContent = '🟢 حریف وارد شد!';
+    setTimeout(startGame, 500);
+  }
+}
+
+// ==================== GAME BOARD ====================
+// Full 15x15 Ludo board cell map (indices 0-224)
+// Types: empty, path-red, path-blue, safe, home-red, home-blue, start-red, start-blue, center
+const BOARD_MAP = [];
+for (let i = 0; i < 225; i++) BOARD_MAP.push('empty');
+
+// Define paths for 2-player simplified board
+const redPath = [128,113,98,83,68,53,38,23,8,9,10,25,40,55,70,85,100,115,116,117,118,119,120,105,90,75,60,45,30,15,0,1,2,3,4,5,20,35,50,65,80,95,110,125,126,127];
+const bluePath = [8,9,10,25,40,55,70,85,100,115,116,117,118,119,120,105,90,75,60,45,30,15,0,1,2,3,4,5,20,35,50,65,80,95,110,125,126,127,128,113,98,83,68,53,38,23];
+
+// Mark path cells
+redPath.forEach((idx, i) => {
+  if (i < 40) BOARD_MAP[idx] = 'path-red';
+  else if (i < 46) BOARD_MAP[idx] = 'home-red';
+});
+bluePath.forEach((idx, i) => {
+  if (i < 40) BOARD_MAP[idx] = BOARD_MAP[idx] === 'path-red' ? 'safe' : 'path-blue';
+  else if (i < 46) BOARD_MAP[idx] = 'home-blue';
+});
+
+// Safe spots (intersections)
+[8, 68, 128, 0, 120, 60].forEach(i => BOARD_MAP[i] = 'safe');
+BOARD_MAP[112] = 'center';
+
+// Start positions
+BOARD_MAP[137] = 'start-red'; BOARD_MAP[138] = 'start-red';
+BOARD_MAP[151] = 'start-red'; BOARD_MAP[152] = 'start-red';
+BOARD_MAP[21] = 'start-blue'; BOARD_MAP[22] = 'start-blue';
+BOARD_MAP[36] = 'start-blue'; BOARD_MAP[37] = 'start-blue';
+
+function buildBoard() {
+  const board = el('ludo-board');
+  board.innerHTML = '';
+  for (let i = 0; i < 225; i++) {
+    const cell = document.createElement('div');
+    cell.className = `cell ${BOARD_MAP[i]}`;
+    cell.dataset.index = i;
+    board.appendChild(cell);
+  }
+}
+
+function renderBoard() {
+  if (!currentGame) return;
+  const state = currentGame.state;
+  document.querySelectorAll('.piece').forEach(p => p.remove());
+
+  [1, 2].forEach(pi => {
+    state.players[pi].pieces.forEach((pos, idx) => {
+      if (pos === -1) {
+        // Show in start area
+        const startCells = document.querySelectorAll(`.cell.start-${state.players[pi].color}`);
+        if (startCells[idx]) {
+          const piece = createPiece(pi, idx, state.players[pi].color);
+          startCells[idx].appendChild(piece);
+        }
+        return;
+      }
+      const path = pi === 1 ? redPath : bluePath;
+      const cellIndex = path[pos];
+      if (cellIndex === undefined) return;
+      const cell = el('ludo-board').children[cellIndex];
+      if (cell) {
+        const piece = createPiece(pi, idx, state.players[pi].color);
+        cell.appendChild(piece);
+      }
+    });
+  });
+}
+
+function createPiece(playerIndex, pieceIndex, color) {
+  const piece = document.createElement('div');
+  piece.className = `piece ${color}`;
+  piece.onclick = () => onPieceClick(playerIndex, pieceIndex);
+  return piece;
+}
+
+function onPieceClick(playerIndex, pieceIndex) {
+  if (!currentGame || myPlayerIndex !== currentGame.state.currentTurn) return;
+  if (playerIndex !== myPlayerIndex) return;
+  ws.send(JSON.stringify({ type: 'move_piece', pieceIndex }));
+}
+
+function rollDice() {
+  if (!currentGame || myPlayerIndex !== currentGame.state.currentTurn) return;
+  ws.send(JSON.stringify({ type: 'roll_dice' }));
+}
+
+function updateTurn() {
+  const status = el('game-status');
+  if (!currentGame) return;
+  if (currentGame.state.currentTurn === myPlayerIndex) {
+    status.textContent = '🎲 نوبت شماست! تاس بیندازید.';
+    el('roll-btn').disabled = false;
+  } else {
+    status.textContent = '⏳ در انتظار حرکت حریف...';
+    el('roll-btn').disabled = true;
+  }
+  const p1Name = currentGame.state.players[1].id === user.id ? 'شما (قرمز)' : 'حریف (قرمز)';
+  const p2Name = currentGame.state.players[2].id === user.id ? 'شما (آبی)' : 'حریف (آبی)';
+  el('player1-badge').textContent = `🎮 ${p1Name}`;
+  el('player2-badge').textContent = `🎮 ${p2Name}`;
+}
+
+function startGame() {
+  showPage('game-page');
+  buildBoard();
+  renderBoard();
+  updateTurn();
+  addSystemChat('🎮 بازی آغاز شد! موفق باشید.');
+}
+
+// ==================== CHAT ====================
+function addChat(msg) {
+  const container = el('chat-messages');
+  const div = document.createElement('div');
+  div.className = `chat-msg ${msg.senderId === 'system' ? 'system' : ''}`;
+  const time = new Date(msg.createdAt).toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
+  div.innerHTML = `<div class="meta">${escapeHtml(msg.senderName || 'سیستم')} • ${time}</div><div>${escapeHtml(msg.message)}</div>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function addSystemChat(text) {
+  addChat({ senderId: 'system', senderName: 'سیستم', message: text, createdAt: new Date().toISOString() });
+}
+
+function sendChat() {
+  const input = el('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  ws.send(JSON.stringify({ type: 'chat_message', message: text }));
+  input.value = '';
+}
+
+function sendReaction(emoji) {
+  ws.send(JSON.stringify({ type: 'reaction', emoji }));
+  showFloatingReaction(emoji);
+}
+
+function showFloatingReaction(emoji) {
+  const elFloat = el('floating-reaction');
+  elFloat.textContent = emoji;
+  elFloat.classList.remove('show');
+  void elFloat.offsetWidth;
+  elFloat.classList.add('show');
+  setTimeout(() => elFloat.classList.remove('show'), 1200);
+}
+
+function togglePanel() {
+  el('side-panel').classList.toggle('hidden');
+}
+
+// ==================== VOICE CHAT ====================
+async function toggleMic() {
+  if (!localStream) {
+    try {
+      localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      addSystemChat('🎙️ میکروفون فعال شد');
+      el('mic-btn').style.background = 'rgba(34,197,94,0.5)';
+      setupPeer();
+    } catch {
+      addSystemChat('❌ دسترسی به میکروفون داده نشد');
+    }
+  } else {
+    localStream.getTracks().forEach(t => t.stop());
+    localStream = null;
+    el('mic-btn').style.background = '';
+    addSystemChat('🎙️ میکروفون خاموش شد');
+  }
+}
+
+function toggleMute() {
+  isMuted = !isMuted;
+  if (remoteAudio) remoteAudio.muted = isMuted;
+  el('mute-btn').textContent = isMuted ? '🔊 صدا' : '🔇 بی‌صدا';
+}
+
+function hangupCall() {
+  if (peerConnection) { peerConnection.close(); peerConnection = null; }
+  if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
+  el('mic-btn').style.background = '';
+  addSystemChat('📞 تماس صوتی قطع شد');
+}
+
+function setupPeer() {
+  peerConnection = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+  localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+  peerConnection.ontrack = (e) => {
+    if (!remoteAudio) { remoteAudio = new Audio(); remoteAudio.autoplay = true; }
+    remoteAudio.srcObject = e.streams[0];
+  };
+  peerConnection.onicecandidate = (e) => {
+    if (e.candidate) ws.send(JSON.stringify({ type: 'voice_signal', signal: { candidate: e.candidate } }));
+  };
+}
+
+function handleVoiceSignal(data) {
+  if (!peerConnection && localStream) setupPeer();
+  if (!peerConnection) return;
+  if (data.signal?.sdp) peerConnection.setRemoteDescription(new RTCSessionDescription(data.signal.sdp));
+  if (data.signal?.candidate) peerConnection.addIceCandidate(new RTCIceCandidate(data.signal.candidate));
+}
+
+// ==================== END GAME ====================
+function endGame(winnerIndex) {
+  showPage('endgame-page');
+  const isMe = winnerIndex === myPlayerIndex;
+  el('winner-name').innerHTML = isMe ? '🏆 تبری! شما برنده شدید!' : '😢 شما باختید! حریف برنده شد.';
+  playSound('win');
+  const winner = currentGame.state.players[winnerIndex];
+  const loser = currentGame.state.players[winnerIndex === 1 ? 2 : 1];
+  const duration = Math.round((Date.now() - new Date(currentGame.createdAt).getTime()) / 60000);
+  el('endgame-stats').innerHTML = `
+    <p>👤 برنده: ${isMe ? 'شما' : 'حریف'}</p>
+    <p>🎯 مهره‌های رسیده به مقصد: ${winner.finished}/4</p>
+    <p>⏱️ مدت بازی: ${duration} دقیقه</p>
+    <p>🎲 تاس‌های انداخته شده: ${currentGame.state.rollCount || '—'}</p>
+  `;
+}
+
+function playAgain() {
+  currentGame = null; myPlayerIndex = null;
+  el('dice-result').textContent = '';
+  showPage('lobby-page');
+}
+
+// ==================== PROFILE / STATS ====================
+async function showProfile() {
+  try {
+    const data = await api('/api/user/me');
+    el('profile-username').textContent = data.username;
+    el('profile-avatar').src = data.avatar;
+    el('profile-stats').innerHTML = `برد: ${data.wins} | باخت: ${data.losses} | بازی: ${data.gamesPlayed}`;
+    showPage('profile-page');
+  } catch (e) { alert(e.message); }
+}
+
+async function showStats() {
+  try {
+    const data = await api('/api/user/stats');
+    el('stats-detail').innerHTML = `
+      <p>✅ برد: ${data.wins}</p>
+      <p>❌ باخت: ${data.losses}</p>
+      <p>🎮 تعداد بازی: ${data.gamesPlayed}</p>
+      <p>📊 درصد برد: ${data.winRate}%</p>
+    `;
+    showPage('stats-page');
+  } catch (e) { alert(e.message); }
+}
+
+// ==================== SETTINGS ====================
+function saveSettings() {
+  settings.sound = el('sound-toggle').checked;
+  settings.volume = el('volume-slider').value;
+  localStorage.setItem('ludo_settings', JSON.stringify(settings));
+}
+
+function showSettings() {
+  el('sound-toggle').checked = settings.sound;
+  el('volume-slider').value = settings.volume;
+  showPage('settings-page');
+}
+
+// ==================== UTILS ====================
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// Enter key support
+el('login-password').addEventListener('keypress', (e) => { if (e.key === 'Enter') login(); });
+el('reg-password2').addEventListener('keypress', (e) => { if (e.key === 'Enter') register(); });
+el('join-room-code').addEventListener('keypress', (e) => { if (e.key === 'Enter') joinRoom(); });
+el('chat-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') sendChat(); });
+
+// ==================== INIT ====================
+if (token && user) {
+  showPage('lobby-page');
+  initLobby();
+  connectWS();
+} else {
+  showPage('login-page');
+}

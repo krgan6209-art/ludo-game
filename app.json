@@ -1,0 +1,14 @@
+{
+  "name": "ludo-online-2player",
+  "description": "Online 2-Player Ludo Game in Persian (RTL)",
+  "repository": "https://github.com/username/ludo-online",
+  "logo": "",
+  "keywords": ["node", "websocket", "game", "ludo"],
+  "image": "heroku/nodejs",
+  "env": {
+    "JWT_SECRET": {
+      "description": "Secret key for JWT tokens",
+      "generator": "secret"
+    }
+  }
+}

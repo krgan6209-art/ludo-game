@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منچ آنلاین دو نفره</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div id="app">
+  <!-- صفحه ورود -->
+  <div id="login-page" class="page">
+    <div class="card glass">
+      <h1>🎮 منچ آنلاین</h1>
+      <h2>ورود به حساب کاربری</h2>
+      <input type="text" id="login-username" placeholder="نام کاربری">
+      <input type="password" id="login-password" placeholder="رمز عبور">
+      <button onclick="login()">ورود</button>
+      <p>حساب کاربری ندارید؟ <a href="#" onclick="showPage('register-page')">ثبت‌نام</a></p>
+      <p id="login-error" class="error"></p>
+    </div>
+  </div>
+
+  <!-- صفحه ثبت‌نام -->
+  <div id="register-page" class="page hidden">
+    <div class="card glass">
+      <h1>📝 ثبت‌نام</h1>
+      <input type="text" id="reg-username" placeholder="نام کاربری">
+      <input type="password" id="reg-password" placeholder="رمز عبور">
+      <input type="password" id="reg-password2" placeholder="تکرار رمز عبور">
+      <button onclick="register()">ثبت‌نام</button>
+      <p>بازیکن قبلی هستید؟ <a href="#" onclick="showPage('login-page')">ورود</a></p>
+      <p id="reg-error" class="error"></p>
+    </div>
+  </div>
+
+  <!-- لابی -->
+  <div id="lobby-page" class="page hidden">
+    <div class="lobby-header glass">
+      <div class="profile-snippet">
+        <img id="lobby-avatar" src="" alt="avatar">
+        <span id="lobby-username"></span>
+      </div>
+      <h2>🏠 لابی اصلی</h2>
+      <button class="icon-btn" onclick="logout()">🚪 خروج</button>
+    </div>
+    <div class="lobby-grid">
+      <div class="lobby-card glass" onclick="createGame()">🎮<br>ایجاد بازی</div>
+      <div class="lobby-card glass" onclick="showPage('join-room-page')">🔎<br>پیدا کردن حریف</div>
+      <div class="lobby-card glass" onclick="showProfile()">👤<br>پروفایل</div>
+      <div class="lobby-card glass" onclick="showStats()">🏆<br>آمار من</div>
+      <div class="lobby-card glass" onclick="showSettings()">⚙️<br>تنظیمات</div>
+    </div>
+  </div>
+
+  <!-- ساخت اتاق -->
+  <div id="create-room-page" class="page hidden">
+    <div class="card glass">
+      <h2>🎮 اتاق شما ساخته شد</h2>
+      <p>کد اتاق:</p>
+      <div id="room-code-display" class="room-code"></div>
+      <p>این کد را برای حریف خود بفرستید.</p>
+      <div id="waiting-opponent">🟡 در انتظار حریف...</div>
+      <button onclick="cancelRoom()">❌ لغو</button>
+    </div>
+  </div>
+
+  <!-- پیوستن به اتاق -->
+  <div id="join-room-page" class="page hidden">
+    <div class="card glass">
+      <h2>🔎 ورود به اتاق</h2>
+      <input type="text" id="join-room-code" placeholder="کد اتاق را وارد کنید">
+      <button onclick="joinRoom()">ورود به بازی</button>
+      <p id="join-error" class="error"></p>
+      <button class="secondary" onclick="showPage('lobby-page')">بازگشت</button>
+    </div>
+  </div>
+
+  <!-- صفحه بازی -->
+  <div id="game-page" class="page hidden">
+    <div class="game-header glass">
+      <div class="player-badge" id="player1-badge">🎮 بازیکن ۱</div>
+      <div class="game-status" id="game-status">در انتظار...</div>
+      <div class="player-badge" id="player2-badge">🎮 بازیکن ۲</div>
+    </div>
+
+    <div class="game-body">
+      <div class="board-container">
+        <div id="ludo-board" class="board"></div>
+        <div class="dice-area">
+          <button id="roll-btn" class="dice-btn" onclick="rollDice()">🎲 پرتاب تاس</button>
+          <div id="dice-result" class="dice-result"></div>
+        </div>
+      </div>
+
+      <div class="side-panel glass" id="side-panel">
+        <div class="panel-header">
+          <span>💬 چت</span>
+          <button class="toggle-panel" onclick="togglePanel()">✖</button>
+        </div>
+        <div id="chat-messages" class="chat-messages"></div>
+        <div class="reactions">
+          <button onclick="sendReaction('😂')">😂</button>
+          <button onclick="sendReaction('😎')">😎</button>
+          <button onclick="sendReaction('🔥')">🔥</button>
+          <button onclick="sendReaction('👏')">👏</button>
+          <button onclick="sendReaction('😱')">😱</button>
+          <button onclick="sendReaction('😢')">😢</button>
+          <button onclick="sendReaction('🤔')">🤔</button>
+          <button onclick="sendReaction('❤️')">❤️</button>
+          <button onclick="sendReaction('🎉')">🎉</button>
+          <button onclick="sendReaction('👍')">👍</button>
+          <button onclick="sendReaction('👎')">👎</button>
+          <button onclick="sendReaction('🎲')">🎲</button>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" placeholder="پیام فارسی بنویسید..." maxlength="500">
+          <button onclick="sendChat()">➤</button>
+        </div>
+        <div class="voice-controls">
+          <button id="mic-btn" onclick="toggleMic()">🎙️ میکروفون</button>
+          <button id="mute-btn" onclick="toggleMute()">🔇 بی‌صدا</button>
+          <button id="hangup-btn" onclick="hangupCall()">📞 طع</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="floating-reaction"></div>
+    <div id="connection-status" class="connection-status hidden">📡 در حال اتصال مجدد...</div>
+  </div>
+
+  <!-- پروفایل -->
+  <div id="profile-page" class="page hidden">
+    <div class="card glass">
+      <h2>👤 پروفایل</h2>
+      <img id="profile-avatar" src="" class="big-avatar">
+      <p id="profile-username"></p>
+      <p id="profile-stats"></p>
+      <button onclick="showPage('lobby-page')">بازگشت</button>
+    </div>
+  </div>
+
+  <!-- آمار -->
+  <div id="stats-page" class="page hidden">
+    <div class="card glass">
+      <h2>🏆 آمار بازی‌ها</h2>
+      <div id="stats-detail"></div>
+      <button onclick="showPage('lobby-page')">بازگشت</button>
+    </div>
+  </div>
+
+  <!-- تنظیمات -->
+  <div id="settings-page" class="page hidden">
+    <div class="card glass">
+      <h2>⚙️ تنظیمات</h2>
+      <label>🔊 صدا: <input type="checkbox" id="sound-toggle" checked onchange="saveSettings()"></label>
+      <label>🎵 حجم صدا: <input type="range" id="volume-slider" min="0" max="100" value="80" onchange="saveSettings()"></label>
+      <button onclick="showPage('lobby-page')">بازگشت</button>
+    </div>
+  </div>
+
+  <!-- پایان بازی -->
+  <div id="endgame-page" class="page hidden">
+    <div class="card glass endgame">
+      <h1>🏆 تبریک!</h1>
+      <p id="winner-name"></p>
+      <div id="endgame-stats"></div>
+      <button onclick="playAgain()">🔄 بازی دوباره</button>
+      <button class="secondary" onclick="showPage('lobby-page')">🏠 بازگشت به لابی</button>
+    </div>
+  </div>
+</div>
+
+<audio id="sound-dice" preload="auto" src="https://www.soundjay.com/buttons/sounds/button-09.mp3"></audio>
+<audio id="sound-move" preload="auto" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+<audio id="sound-hit" preload="auto" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
+<audio id="sound-win" preload="auto" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
+<audio id="sound-error" preload="auto" src="https://www.soundjay.com/buttons/sounds/button-8.mp3"></audio>
+
+<script src="/js/app.js"></script>
+</body>
+</html>

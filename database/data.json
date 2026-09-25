@@ -1,0 +1,1100 @@
+{
+  "users": [
+    {
+      "id": "mugds90ri368b1",
+      "username": "test987",
+      "passwordHash": "dc48e5a33382b9b72a95aa443b52598f:706f4a099678b7dff530bcaa5620c1ce5820266df043eaa59ff6677775e693e811d807a8d75ee3e3b3cd1159e0ad0813e0fcbf51cb155cef416e6392017adff6",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=test987",
+      "wins": 0,
+      "losses": 0,
+      "gamesPlayed": 0,
+      "createdAt": "2026-09-25T03:08:12.091Z"
+    },
+    {
+      "id": "mugh57k39xfqi1",
+      "username": "Mallahi2",
+      "passwordHash": "c290932622bc30190714a024fa67c47f:ef32931c1c766fceffde79d0116441565a1ebcbe1277d1b1b7f70d337344fb2bf902cd3b61533dd0bce1d6b788931ad6145b185d1d7f47202e10c98dee269ddd",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Mallahi2",
+      "wins": 0,
+      "losses": 0,
+      "gamesPlayed": 0,
+      "createdAt": "2026-09-25T04:42:15.587Z"
+    },
+    {
+      "id": "mugi37qysrjpmw",
+      "username": "Ramin12",
+      "passwordHash": "05e352e2c6522506c858903cd8d9756f:3ed90adf4a9af9c636517cde2f499020a62f5e0b70505bc90cccdcd9d26ddb32b472e796f10dce9b6144a1400380160a389a78deebabe293f0af2f0e31717a14",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Ramin12",
+      "wins": 0,
+      "losses": 0,
+      "gamesPlayed": 0,
+      "createdAt": "2026-09-25T05:08:42.171Z"
+    },
+    {
+      "id": "mugjff6a89yh6a",
+      "username": "Qwerty",
+      "passwordHash": "7a5d07d8c0e819f7dae2e5dcb09e6262:6634e0bdd648889351bb8863e0646e4a70763390194f0fbfc2c90288fdf7c890a99b0acb4716e72d4fc4fecc31dedabc5366391817ad5ae98661abe03c630719",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Qwerty",
+      "wins": 0,
+      "losses": 0,
+      "gamesPlayed": 0,
+      "createdAt": "2026-09-25T05:46:11.267Z"
+    }
+  ],
+  "games": [
+    {
+      "id": "mugdvo2h5bfwgt",
+      "roomCode": "7F9H",
+      "player1": "mugds90ri368b1",
+      "player2": null,
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugds90ri368b1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": null,
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790305851545,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "waiting",
+      "winner": null,
+      "createdAt": "2026-09-25T03:10:51.545Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mugdvxhkq94wp9",
+      "roomCode": "NQQG",
+      "player1": "mugds90ri368b1",
+      "player2": null,
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugds90ri368b1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": null,
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790305863752,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "waiting",
+      "winner": null,
+      "createdAt": "2026-09-25T03:11:03.752Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mugf8t0vnp0dn9",
+      "roomCode": "EYKI",
+      "player1": "mugds90ri368b1",
+      "player2": null,
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugds90ri368b1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": null,
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790308144111,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "waiting",
+      "winner": null,
+      "createdAt": "2026-09-25T03:49:04.111Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mugh5bsqrvg6av",
+      "roomCode": "BROK",
+      "player1": "mugh57k39xfqi1",
+      "player2": null,
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugh57k39xfqi1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": null,
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790311341050,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "waiting",
+      "winner": null,
+      "createdAt": "2026-09-25T04:42:21.050Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mughbrpglkp9t5",
+      "roomCode": "N8AQ",
+      "player1": "mugh57k39xfqi1",
+      "player2": null,
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugh57k39xfqi1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": null,
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790311641604,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "waiting",
+      "winner": null,
+      "createdAt": "2026-09-25T04:47:21.604Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mughc9x0lv6e32",
+      "roomCode": "OFBW",
+      "player1": "mugh57k39xfqi1",
+      "player2": null,
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugh57k39xfqi1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": null,
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790311665204,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "waiting",
+      "winner": null,
+      "createdAt": "2026-09-25T04:47:45.204Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mughj2n6fwz4c2",
+      "roomCode": "SOFV",
+      "player1": "mugds90ri368b1",
+      "player2": null,
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugds90ri368b1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": null,
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790311982370,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "waiting",
+      "winner": null,
+      "createdAt": "2026-09-25T04:53:02.370Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mughkc5127delt",
+      "roomCode": "SLBD",
+      "player1": "mugh57k39xfqi1",
+      "player2": null,
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugh57k39xfqi1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": null,
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790312041333,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "waiting",
+      "winner": null,
+      "createdAt": "2026-09-25T04:54:01.333Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mughtkv5ekod1c",
+      "roomCode": "5SZ0",
+      "player1": "mugh57k39xfqi1",
+      "player2": null,
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugh57k39xfqi1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": null,
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790312472545,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "waiting",
+      "winner": null,
+      "createdAt": "2026-09-25T05:01:12.545Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mughwf47d9l55s",
+      "roomCode": "N3BY",
+      "player1": "mugh57k39xfqi1",
+      "player2": "mugds90ri368b1",
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugh57k39xfqi1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": "mugds90ri368b1",
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790312605064,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "playing",
+      "winner": null,
+      "createdAt": "2026-09-25T05:03:25.064Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mugi1ql8i6ojvi",
+      "roomCode": "TDHD",
+      "player1": "mugh57k39xfqi1",
+      "player2": null,
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugh57k39xfqi1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": null,
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790312853213,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "waiting",
+      "winner": null,
+      "createdAt": "2026-09-25T05:07:33.213Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mugi1t00fgm7k9",
+      "roomCode": "X8QT",
+      "player1": "mugh57k39xfqi1",
+      "player2": null,
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugh57k39xfqi1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": null,
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790312856336,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "waiting",
+      "winner": null,
+      "createdAt": "2026-09-25T05:07:36.336Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mugi3gvq6r1mtp",
+      "roomCode": "MC9A",
+      "player1": "mugh57k39xfqi1",
+      "player2": "mugi37qysrjpmw",
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugh57k39xfqi1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": "mugi37qysrjpmw",
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": 2,
+        "rollCount": 6,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790312933942,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "playing",
+      "winner": null,
+      "createdAt": "2026-09-25T05:08:53.942Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mugj78rgs5fliq",
+      "roomCode": "BL6S",
+      "player1": "mugh57k39xfqi1",
+      "player2": "mugi37qysrjpmw",
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugh57k39xfqi1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": "mugi37qysrjpmw",
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790314789661,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "playing",
+      "winner": null,
+      "createdAt": "2026-09-25T05:39:49.661Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mugj9mhgehho4o",
+      "roomCode": "AOB2",
+      "player1": "mugh57k39xfqi1",
+      "player2": null,
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugh57k39xfqi1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": null,
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790314900759,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "waiting",
+      "winner": null,
+      "createdAt": "2026-09-25T05:41:40.759Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mugjaeriov4a59",
+      "roomCode": "W9IO",
+      "player1": "mugh57k39xfqi1",
+      "player2": null,
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugh57k39xfqi1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": null,
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790314937406,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "waiting",
+      "winner": null,
+      "createdAt": "2026-09-25T05:42:17.406Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mugjaryk9637lp",
+      "roomCode": "5I39",
+      "player1": "mugh57k39xfqi1",
+      "player2": "mugds90ri368b1",
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugh57k39xfqi1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": "mugds90ri368b1",
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790314954509,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "playing",
+      "winner": null,
+      "createdAt": "2026-09-25T05:42:34.509Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mugjcztll0o7s6",
+      "roomCode": "KLOA",
+      "player1": "mugds90ri368b1",
+      "player2": null,
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugds90ri368b1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": null,
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790315058010,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "waiting",
+      "winner": null,
+      "createdAt": "2026-09-25T05:44:18.010Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mugjfkhd1mh7hi",
+      "roomCode": "UE2P",
+      "player1": "mugjff6a89yh6a",
+      "player2": "mugds90ri368b1",
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugjff6a89yh6a",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": "mugds90ri368b1",
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790315178097,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "playing",
+      "winner": null,
+      "createdAt": "2026-09-25T05:46:18.097Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mugjj8ajqp1gye",
+      "roomCode": "1S2L",
+      "player1": "mugds90ri368b1",
+      "player2": "mugjff6a89yh6a",
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugds90ri368b1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": "mugjff6a89yh6a",
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790315348924,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "playing",
+      "winner": null,
+      "createdAt": "2026-09-25T05:49:08.924Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mugjn4of7c2fj8",
+      "roomCode": "IFUS",
+      "player1": "mugds90ri368b1",
+      "player2": null,
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugds90ri368b1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": null,
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790315530863,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "waiting",
+      "winner": null,
+      "createdAt": "2026-09-25T05:52:10.863Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mugjnrtrio5r3x",
+      "roomCode": "YAKK",
+      "player1": "mugds90ri368b1",
+      "player2": "mugjff6a89yh6a",
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugds90ri368b1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": "mugjff6a89yh6a",
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790315560863,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "playing",
+      "winner": null,
+      "createdAt": "2026-09-25T05:52:40.863Z",
+      "finishedAt": null
+    },
+    {
+      "id": "mugk1mtzhl3vdh",
+      "roomCode": "4FK3",
+      "player1": "mugds90ri368b1",
+      "player2": "mugjff6a89yh6a",
+      "state": {
+        "players": {
+          "1": {
+            "id": "mugds90ri368b1",
+            "color": "red",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          },
+          "2": {
+            "id": "mugjff6a89yh6a",
+            "color": "blue",
+            "pieces": [
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "finished": 0
+          }
+        },
+        "currentTurn": 1,
+        "dice": null,
+        "rollCount": 0,
+        "status": "waiting",
+        "winner": null,
+        "moves": [],
+        "startedAt": 1790316207575,
+        "finishedAt": null
+      },
+      "currentTurn": 1,
+      "status": "playing",
+      "winner": null,
+      "createdAt": "2026-09-25T06:03:27.575Z",
+      "finishedAt": null
+    }
+  ],
+  "chatMessages": [
+    {
+      "id": "1790312825197",
+      "gameId": "mughwf47d9l55s",
+      "senderId": "mugds90ri368b1",
+      "senderName": "test987",
+      "message": "X",
+      "createdAt": "2026-09-25T05:07:05.197Z"
+    },
+    {
+      "id": "1790313065832",
+      "gameId": "mugi3gvq6r1mtp",
+      "senderId": "mugh57k39xfqi1",
+      "senderName": "Mallahi2",
+      "message": "پدبلا",
+      "createdAt": "2026-09-25T05:11:05.832Z"
+    }
+  ],
+  "reactions": []
+}
